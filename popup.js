@@ -22,9 +22,11 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
         var BuyRecoilRestrictedsFor = RecoilClassifiedFNAVG/11.3;
         var RecoilRestrictedMWURL = 'https://csfloat.com/api/v1/listings?limit=8&rarity=4&sort_by=lowest_price&min_float=0.07&max_float=0.097&collection=set_community_31&type=buy_now';
         const ValidRecoilRestrictedMWcount = await Valids(RecoilRestrictedMWURL, BuyRecoilRestrictedsFor);
-        FinalOutput = FinalOutput + "Number of Valid Recoil Resticted MW skins: " + ValidRecoilRestrictedMWcount + "\n";
+        FinalOutput = FinalOutput + "Average classified Recoil price: " + RecoilClassifiedFNAVG + "\n" + "Number of Valid Recoil Resticted MW skins: " + ValidRecoilRestrictedMWcount + "\n";
 
-
+        const BaseOrPriceDASALL = await BaseOrPrice2(ALLDreamsAndNightmaresClassifiedFNLink, AbyssalApparitionFN, MelondramaFN, RapidEyeMovementFN, AbyssalApparitionFNLink, MelondramaFNLink, RapidEyeMovementFNLink)
+        FinalOutput = FinalOutput + "Average classified Dreams and Nightmares price: " + BaseOrPriceDASALL + "\n";
+        //document.getElementById('output').textContent = BaseOrPriceDASALL;
 
     } catch (error) {
         document.getElementById('output').textContent = 'Error fetching data: ' + error;
@@ -32,11 +34,11 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
     document.getElementById('output').textContent = FinalOutput;
 });
 
-async function BaseOrPrice(url, FloatMatters) {
+async function BaseOrPrice(url, FloatMatters) { //Returns the smaller number between base and price for 1 skin.
     try {
         const response = await fetch(url);
         const data = await response.json();
-        var base = parseFloat(data[0].reference.base_price);
+        var base = parseFloat(data[0].reference.predicted_price);
         var price = parseFloat(data[0].price);
         
         if (base < price && FloatMatters == 0) {
@@ -44,6 +46,49 @@ async function BaseOrPrice(url, FloatMatters) {
         } else {
             return (price - 1);
         }
+    } catch (error) {
+        document.getElementById('output').textContent = 'Error fetching data: ' + error;
+        return 0;
+    }
+}
+
+async function BaseOrPrice2(ALLurl, firstskin, secondskin, thirdskin, firstskinURL, secondskinURL, thirdskinURL){ //Returns the average for all BaseOrPrices for a collection.
+    try {
+        const response = await fetch(ALLurl);
+        const data = await response.json();
+        let average = 0;
+        var skins = [firstskin, secondskin, thirdskin];
+        var IfRegister = [1,1,1];
+        var c = 0;
+        for (let skin of skins) {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].item && data[i].item.market_hash_name === skin) {
+                    var base = parseFloat(data[i].reference.predicted_price);
+                    var price = parseFloat(data[i].price);
+                    
+                    if (base < price) {
+                        average += base;
+                    } else {
+                        average += (price - 1);
+                    }
+                    IfRegister[c] = 0;
+                    break;
+                }
+            }
+            c += 1;
+        }
+            
+        if(IfRegister[0] == 1){
+            average += await BaseOrPrice(firstskinURL, 0);
+        }
+        if(IfRegister[1] == 1){
+            average += await BaseOrPrice(secondskinURL, 0);
+        }
+        if(IfRegister[2] == 1){
+            average += await BaseOrPrice(thirdskinURL, 0);
+        }
+        return average / 3;
+        
     } catch (error) {
         document.getElementById('output').textContent = 'Error fetching data: ' + error;
         return 0;
