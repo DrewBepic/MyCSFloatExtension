@@ -1,0 +1,6 @@
+FN skins
+Dreams and Nightmares: 1.11
+Fracture: 1.15
+Danger Zone: 1.22
+Breakout: 1.35
+Recoil: 1.45
