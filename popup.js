@@ -22,7 +22,7 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
         const BaseOrPriceRecoilALL = await BaseOrPrice2(ALLRecoilClassifiedFNLink,RecoilOutputs,RecoilOutputLinks);
         var BuyRecoilRestrictedsFor = BaseOrPriceRecoilALL/11.3;
         const ValidRecoilRestrictedMWcount = await Valids(RecoilRestrictedMWLink, BuyRecoilRestrictedsFor);
-        FinalOutput = FinalOutput + "Recoil Resticted MW price: " + BuyRecoilRestrictedsFor/100 + "\n";
+        FinalOutput = FinalOutput + "Recoil Resticted MW price: " + Math.floor(BuyRecoilRestrictedsFor) / 100+ "\n";
         FinalOutput = FinalOutput + "Recoil Resticted MW skins: " + ValidRecoilRestrictedMWcount + "\n";
         
         const BaseOrPriceDASALL = await BaseOrPrice2(ALLDreamsAndNightmaresClassifiedFNLink, DreamsAndNightmaresOutputs, DreamsAndNightmaresOutputLinks);
@@ -34,7 +34,7 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
         const BaseOrPriceRevolutionALL = await BaseOrPrice2(ALLRevolutionClassifiedFNLink,RevolutionOutputs,RevolutionOutputLinks);
         var BuyRevolutionRestrictedsFor = ThreeFNSevenMW(BaseOrPriceDASALL, BaseOrPriceRevolutionALL);
         const ValidRevolutionRestrictedMWcount = await Valids(RevolutionRestrictedMWLink,BuyRevolutionRestrictedsFor);
-        FinalOutput = FinalOutput + "Revolution Resticted MW price: " + BuyRevolutionRestrictedsFor/100 + "\n";
+        FinalOutput = FinalOutput + "Revolution Resticted MW price: " + Math.floor(BuyRevolutionRestrictedsFor) / 100 + "\n";
         FinalOutput = FinalOutput + "Revolution Resticted MW skins: " + ValidRevolutionRestrictedMWcount + "\n";
     } catch (error) {
         document.getElementById('output').textContent = 'Error fetching data: ' + error;
