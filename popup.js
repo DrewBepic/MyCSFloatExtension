@@ -1,33 +1,21 @@
 var requestsNum = 0;
+var DreamsAndNightmaresRestrictedFNBasePrice = 111;
 document.getElementById('fetchButton').addEventListener('click', async () => {
-    var RecoilOutputLinks = [
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=36&paint_index=1153',
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=7&paint_index=1143',
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&min_float=0.07&max_float=0.1&collection=set_community_31&type=buy_now&def_index=29&paint_index=1155'
-    ];
-    var RecoilOutputs = [
-        "P250 | Visions (Factory New)",
-        "AK-47 | Ice Coaled (Factory New)",
-        "Sawed-Off | Kiss♥Love (Minimal Wear)"
-    ];
+    var RecoilOutputLinks = ['https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=36&paint_index=1153','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=7&paint_index=1143','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&min_float=0.07&max_float=0.1&collection=set_community_31&type=buy_now&def_index=29&paint_index=1155'];
+    var RecoilOutputs = ["P250 | Visions (Factory New)","AK-47 | Ice Coaled (Factory New)","Sawed-Off | Kiss♥Love (Minimal Wear)"];
     var ALLRecoilClassifiedFNLink = 'https://csfloat.com/api/v1/listings?limit=50&category=1&rarity=5&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now';
     var RecoilRestrictedMWLink = 'https://csfloat.com/api/v1/listings?limit=8&rarity=4&sort_by=lowest_price&min_float=0.07&max_float=0.097&collection=set_community_31&type=buy_now';
 
-    var DreamsAndNightmaresRestrictedFNBasePrice = 111;
-    var DreamsAndNightmaresOutputLinks = [
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=33&paint_index=1133',
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=2&paint_index=1126',
-        'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=10&paint_index=1127'
-    ];
-    
-    var DreamsAndNightmaresOutputs = [
-        "MP7 | Abyssal Apparition (Factory New)",
-        "Dual Berettas | Melondrama (Factory New)",
-        "FAMAS | Rapid Eye Movement (Factory New)"
-    ];
+    var DreamsAndNightmaresOutputLinks = ['https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=33&paint_index=1133','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=2&paint_index=1126','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=10&paint_index=1127'];
+    var DreamsAndNightmaresOutputs = ["MP7 | Abyssal Apparition (Factory New)","Dual Berettas | Melondrama (Factory New)","FAMAS | Rapid Eye Movement (Factory New)"];
     var ALLDreamsAndNightmaresClassifiedFNLink = 'https://csfloat.com/api/v1/listings?limit=50&category=1&rarity=5&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now';
     var DreamsAndNightmaresRestrictedFNLink = 'https://csfloat.com/api/v1/listings?limit=8&category=1&rarity=4&sort_by=lowest_price&max_float=0.03&collection=set_community_30&min_price=80&type=buy_now';
 
+    //TODO: Horizon, Kilowatt
+    var RevolutionOutputLinks = ['https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_32&type=buy_now&def_index=9&paint_index=1222','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_32&type=buy_now&def_index=24&paint_index=1236','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_32&type=buy_now&def_index=32&paint_index=1224'];
+    var RevolutionOutputs = ["AWP | Duality (Factory New)","UMP-45 | Wild Child (Factory New)","P2000 | Wicked Sick (Factory New)"];
+    var ALLRevolutionClassifiedFNLink = 'https://csfloat.com/api/v1/listings?limit=50&category=1&rarity=5&sort_by=lowest_price&max_float=0.07&collection=set_community_32&type=buy_now';
+    var RevolutionRestrictedMWLink = 'https://csfloat.com/api/v1/listings?limit=8&rarity=4&sort_by=lowest_price&min_float=0.07&max_float=0.1&collection=set_community_32&type=buy_now';
 
     var FinalOutput = "";
     try {
@@ -43,12 +31,21 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
         const ValidDASRestrictedFNcount = await Valids(DreamsAndNightmaresRestrictedFNLink, DreamsAndNightmaresRestrictedFNBasePrice);
         FinalOutput = FinalOutput + "Dreams and Nightmares Restricted FN skins: " + ValidDASRestrictedFNcount + "\n";
 
+        const BaseOrPriceRevolutionALL = await BaseOrPrice2(ALLRevolutionClassifiedFNLink,RevolutionOutputs,RevolutionOutputLinks);
+        var BuyRevolutionRestrictedsFor = ThreeFNSevenMW(BaseOrPriceDASALL, BaseOrPriceRevolutionALL);
+        const ValidRevolutionRestrictedMWcount = await Valids(RevolutionRestrictedMWLink,BuyRevolutionRestrictedsFor);
+        FinalOutput = FinalOutput + "Revolution Resticted MW price: " + BuyRevolutionRestrictedsFor/100 + "\n";
+        FinalOutput = FinalOutput + "Revolution Resticted MW skins: " + ValidRevolutionRestrictedMWcount + "\n";
     } catch (error) {
         document.getElementById('output').textContent = 'Error fetching data: ' + error;
     }
     FinalOutput = "Requests: " + requestsNum + "\n" + FinalOutput;
     document.getElementById('output').textContent = FinalOutput;
 });
+
+function ThreeFNSevenMW(MainFNOutputs, MainMWOutputs){
+    return (((MainFNOutputs*.3+MainMWOutputs*.7)/1.13)-(DreamsAndNightmaresRestrictedFNBasePrice*3))/7
+}
 
 async function BaseOrPrice(url, FloatMatters) { //Returns the smaller number between base and price for 1 skin.
     try {
