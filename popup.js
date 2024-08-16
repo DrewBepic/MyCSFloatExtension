@@ -1,7 +1,15 @@
+var requestsNum = 0;
 document.getElementById('fetchButton').addEventListener('click', async () => {
+
     var VisionsFNLink = 'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=36&paint_index=1153';
     var IceCoaledFNLink = 'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now&def_index=7&paint_index=1143';
     var KissLoveMWGoodFloatLink = 'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&min_float=0.07&max_float=0.1&collection=set_community_31&type=buy_now&def_index=29&paint_index=1155';
+    var VisionsFN = "P250 | Visions (Factory New)";
+    var IceCoaledFN = "AK-47 | Ice Coaled (Factory New)";
+    var KissLoveMWGoodFloat = "Sawed-Off | Kiss♥Love (Minimal Wear)";
+    var ALLRecoilClassifiedFNLink = 'https://csfloat.com/api/v1/listings?limit=50&category=1&rarity=5&sort_by=lowest_price&max_float=0.07&collection=set_community_31&type=buy_now';
+    var RecoilRestrictedMWLink = 'https://csfloat.com/api/v1/listings?limit=8&rarity=4&sort_by=lowest_price&min_float=0.07&max_float=0.097&collection=set_community_31&type=buy_now';
+
     var DreamsAndNightmaresRestrictedFNBasePrice = 111;
     var AbyssalApparitionFNLink = 'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=33&paint_index=1133';
     var MelondramaFNLink = 'https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_30&type=buy_now&def_index=2&paint_index=1126';
@@ -10,33 +18,35 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
     var AbyssalApparitionFN = "MP7 | Abyssal Apparition (Factory New)";
     var MelondramaFN = "Dual Berettas | Melondrama (Factory New)";
     var RapidEyeMovementFN = "FAMAS | Rapid Eye Movement (Factory New)";
+    var DreamsAndNightmaresRestrictedFNLink = 'https://csfloat.com/api/v1/listings?limit=8&category=1&rarity=4&sort_by=lowest_price&max_float=0.03&collection=set_community_30&min_price=80&type=buy_now';
 
 
     var FinalOutput = "";
     try {
-        const baseOrPriceVisions = await BaseOrPrice(VisionsFNLink, 0);
-        const baseOrPriceIceCoaled = await BaseOrPrice(IceCoaledFNLink, 0);
-        const baseOrPriceKissLoveMWGoodFloat = await BaseOrPrice(KissLoveMWGoodFloatLink, 1);
+        const BaseOrPriceRecoilALL = await BaseOrPrice2(ALLRecoilClassifiedFNLink,VisionsFN,IceCoaledFN,KissLoveMWGoodFloat,VisionsFNLink,IceCoaledFNLink,KissLoveMWGoodFloatLink);
+        var RecoilClassifiedFNAVG = BaseOrPriceRecoilALL;
+        var BuyRecoilRestrictedsFor = BaseOrPriceRecoilALL/11.3;
+        const ValidRecoilRestrictedMWcount = await Valids(RecoilRestrictedMWLink, BuyRecoilRestrictedsFor);
+        FinalOutput = FinalOutput + "Average Classified Recoil price: " + RecoilClassifiedFNAVG + "\n";
+        FinalOutput = FinalOutput + "Number of Valid Recoil Resticted MW skins: " + ValidRecoilRestrictedMWcount + "\n";
         
-        var RecoilClassifiedFNAVG = (baseOrPriceVisions + baseOrPriceIceCoaled + baseOrPriceKissLoveMWGoodFloat) / 3;
-        var BuyRecoilRestrictedsFor = RecoilClassifiedFNAVG/11.3;
-        var RecoilRestrictedMWURL = 'https://csfloat.com/api/v1/listings?limit=8&rarity=4&sort_by=lowest_price&min_float=0.07&max_float=0.097&collection=set_community_31&type=buy_now';
-        const ValidRecoilRestrictedMWcount = await Valids(RecoilRestrictedMWURL, BuyRecoilRestrictedsFor);
-        FinalOutput = FinalOutput + "Average classified Recoil price: " + RecoilClassifiedFNAVG + "\n" + "Number of Valid Recoil Resticted MW skins: " + ValidRecoilRestrictedMWcount + "\n";
-
         const BaseOrPriceDASALL = await BaseOrPrice2(ALLDreamsAndNightmaresClassifiedFNLink, AbyssalApparitionFN, MelondramaFN, RapidEyeMovementFN, AbyssalApparitionFNLink, MelondramaFNLink, RapidEyeMovementFNLink)
-        FinalOutput = FinalOutput + "Average classified Dreams and Nightmares price: " + BaseOrPriceDASALL + "\n";
-        //document.getElementById('output').textContent = BaseOrPriceDASALL;
+        FinalOutput = FinalOutput + "Average Classified FN Dreams and Nightmares price: " + BaseOrPriceDASALL + "\n";
+
+        const ValidDASRestrictedFNcount = await Valids(DreamsAndNightmaresRestrictedFNLink, DreamsAndNightmaresRestrictedFNBasePrice);
+        FinalOutput = FinalOutput + "Number of Valid Dreams and Nightmares Restricted FN skins: " + ValidDASRestrictedFNcount + "\n";
 
     } catch (error) {
         document.getElementById('output').textContent = 'Error fetching data: ' + error;
     }
+    FinalOutput = "Requests: " + requestsNum + "\n" + FinalOutput;
     document.getElementById('output').textContent = FinalOutput;
 });
 
 async function BaseOrPrice(url, FloatMatters) { //Returns the smaller number between base and price for 1 skin.
     try {
         const response = await fetch(url);
+        requestsNum++;
         const data = await response.json();
         var base = parseFloat(data[0].reference.predicted_price);
         var price = parseFloat(data[0].price);
@@ -55,6 +65,7 @@ async function BaseOrPrice(url, FloatMatters) { //Returns the smaller number bet
 async function BaseOrPrice2(ALLurl, firstskin, secondskin, thirdskin, firstskinURL, secondskinURL, thirdskinURL){ //Returns the average for all BaseOrPrices for a collection.
     try {
         const response = await fetch(ALLurl);
+        requestsNum++;
         const data = await response.json();
         let average = 0;
         var skins = [firstskin, secondskin, thirdskin];
@@ -79,13 +90,13 @@ async function BaseOrPrice2(ALLurl, firstskin, secondskin, thirdskin, firstskinU
         }
             
         if(IfRegister[0] == 1){
-            average += await BaseOrPrice(firstskinURL, 0);
+            average += await BaseOrPrice(firstskinURL, 1);
         }
         if(IfRegister[1] == 1){
-            average += await BaseOrPrice(secondskinURL, 0);
+            average += await BaseOrPrice(secondskinURL, 1);
         }
         if(IfRegister[2] == 1){
-            average += await BaseOrPrice(thirdskinURL, 0);
+            average += await BaseOrPrice(thirdskinURL, 1);
         }
         return average / 3;
         
@@ -98,6 +109,7 @@ async function BaseOrPrice2(ALLurl, firstskin, secondskin, thirdskin, firstskinU
 async function Valids(url, BuyPrice){
     try{
         const response = await fetch(url);
+        requestsNum++;
         const data = await response.json();
         var valids = 0;
         for(var i = 0; i < 8; i++){
