@@ -83,6 +83,11 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
     ALLKilowattClassifiedFNLink;
     var KilowattRestrictedFNLink = 'https://csfloat.com/api/v1/listings?limit=8&category=1&rarity=4&sort_by=lowest_price&max_float=0.03&collection=set_community_33&type=buy_now';
 
+    var ClutchOutputLinks = ['https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_19&type=buy_now&def_index=9&paint_index=691','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_19&type=buy_now&def_index=8&paint_index=690','https://csfloat.com/api/v1/listings?limit=1&category=1&sort_by=lowest_price&max_float=0.07&collection=set_community_19&type=buy_now&def_index=61&paint_index=705'];
+    var ClutchOutputs = ["AWP | Mortis (Factory New)","AUG | Stymphalian (Factory New)","USP-S | Cortex (Factory New)"];
+    var ALLClutchClassifiedFNLink = 'https://csfloat.com/api/v1/listings?limit=50&category=1&rarity=5&sort_by=lowest_price&max_float=0.07&collection=set_community_19&type=buy_now';
+    var ClutchRestrictedFNLink = 'https://csfloat.com/api/v1/listings?limit=8&category=1&rarity=4&sort_by=lowest_price&max_float=0.03&collection=set_community_19&type=buy_now';
+
     var FinalOutput = "";
     try {
         const BaseOrPriceRecoilALL = await BaseOrPrice2(ALLRecoilClassifiedFNLink,RecoilTradeUpOutputs,RecoilTradeUpOutputLinks);
@@ -163,6 +168,12 @@ document.getElementById('fetchButton').addEventListener('click', async () => {
         const ValidKilowattRestrictedFNcount = await Valids(KilowattRestrictedFNLink,BuyKilowattRestrictedsFNFor);
         FinalOutput = FinalOutput + "Kilowatt Resticted FN price: $" + Math.floor(BuyKilowattRestrictedsFNFor) / 100 + "\n";
         FinalOutput = FinalOutput + "Kilowatt Resticted FN skins: " + ValidKilowattRestrictedFNcount + "\n";
+
+        const BaseOrPriceClutchALL = await BaseOrPrice2(ALLClutchClassifiedFNLink,ClutchOutputs,ClutchOutputLinks);
+        var BuyClutchRestrictedsFNFor = ThreeFN(BaseOrPriceClutchALL, BaseOrPriceRevolutionALL);
+        const ValidClutchRestrictedFNcount = await Valids(ClutchRestrictedFNLink,BuyClutchRestrictedsFNFor);
+        FinalOutput = FinalOutput + "Clutch Resticted FN price: $" + Math.floor(BuyClutchRestrictedsFNFor) / 100 + "\n";
+        FinalOutput = FinalOutput + "Clutch Resticted FN skins: " + ValidClutchRestrictedFNcount + "\n";
 
 
     } catch (error) {
